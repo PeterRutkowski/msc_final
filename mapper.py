@@ -33,19 +33,16 @@ class Mapper:
         """
 
         projector = projector.fit(x)
-        covering_alg = OneDimensionalCover(kind=kind,
-                                           n_intervals=n_intervals,
-                                           overlap_frac=overlap_frac)
         mapper_pipes = []
         
         for i in range(n_components):
-            projection = Projection(columns=i)
-            filter_func = Pipeline(steps=[('projector', projector), ('proj', projection)],
-                                   verbose=1)
-            cover = covering_alg
             mapper_pipe = make_mapper_pipeline(scaler=None,
-                                               filter_func=filter_func,
-                                               cover=cover,
+                                               filter_func=Pipeline(steps=[('projector', projector), 
+                                                                           ('proj', Projection(columns=i))],
+                                                                    verbose=1),
+                                               cover=OneDimensionalCover(kind=kind,
+                                                                         n_intervals=n_intervals,
+                                                                         overlap_frac=overlap_frac),
                                                clusterer=clusterer,
                                                verbose=True,
                                                n_jobs=1)
@@ -57,9 +54,13 @@ class Mapper:
         graphs = Parallel(n_jobs=int(mp.cpu_count()), prefer="threads", verbose=1)(
             delayed(mapper_pipe[1].fit_transform)(x) for mapper_pipe in mapper_pipes)
         
-        covers_fitted = [covering_alg.fit(projector.transform(x)[:, i]) for i in range(n_components)]
-        covers = [[(covers_fitted[j].left_limits_[i], covers_fitted[j].right_limits_[i]) for i in range(n_intervals)]
-                  for j in range(n_components)]
+        x_proj = projector.transform(x)
+        covers = []
+        for i in range(n_components):
+            odc = OneDimensionalCover(kind=kind,
+                                      n_intervals=n_intervals,
+                                      overlap_frac=overlap_frac).fit(x_proj[:, i])
+            covers.append([(odc.left_limits_[j], odc.right_limits_[j]) for j in range(n_intervals)])
         
         pickle.dump((latent_projector, graphs, covers), 
                     open('experiments/{}'.format(experiment_name), 'wb'))
