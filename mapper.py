@@ -63,7 +63,7 @@ class Mapper:
             covers.append([(odc.left_limits_[j], odc.right_limits_[j]) for j in range(n_intervals)])
         
         pickle.dump((latent_projector, graphs, covers), 
-                    open('experiments/{}'.format(experiment_name), 'wb'))
+                    open('data2/{}'.format(experiment_name), 'wb'))
             
     @staticmethod
     def get_representations(x_train, x_test_none, x_test_gaussian, y_train, y_test,
@@ -71,11 +71,13 @@ class Mapper:
         b = binarizer.Binarizer()
         x_train_rep = b.binarize(x_train, graphs)
         
-        wknn = weighted_knn.WeightedKNN()
-        x_test_none_rep = wknn.fit_transform(k, x_test_none, x_train, x_train_rep, latent_space, covers)
-        x_test_gaussian_rep = wknn.fit_transform(k, x_test_gaussian, x_train, x_train_rep, latent_space, covers)
+        #wknn = weighted_knn.WeightedKNN()
+        #x_test_none_rep = wknn.fit_transform(k, x_test_none, x_train, x_train_rep, latent_space, covers)
+        # x_test_gaussian_rep = wknn.fit_transform(k, x_test_gaussian, x_train, x_train_rep, latent_space, covers)
+        x_test_none_rep = np.asarray([])
+        x_test_gaussian_rep = np.asarray([])
         
-        np.savez('experiments/{}'.format(experiment_name), x_train=x_train_rep, 
+        np.savez('data2/{}'.format(experiment_name), x_train=x_train_rep,
                  x_test_none=x_test_none_rep, x_test_gaussian=x_test_gaussian_rep, 
                  y_train=y_train, y_test=y_test)
         

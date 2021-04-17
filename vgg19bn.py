@@ -9,6 +9,7 @@ class VGG19bn:
         self.layers = layers
         self.device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
         self.model = vgg19_bn(pretrained=True).to(self.device)
+        self.model.eval()
         self.outputs = layer_outputs.LayerOutputs()
         self.__hook_model()
 

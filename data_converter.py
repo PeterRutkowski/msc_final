@@ -30,7 +30,7 @@ class DataConverter:
         
         np.savez(save_path,
                  x_test_none=self.convert(loaded['paths_test']),
-                 x_test_gaussian=self.convert(loaded['paths_test'], 'gaussian'),
+                 #x_test_gaussian=self.convert(loaded['paths_test'], 'gaussian'),
                  x_train=self.convert(loaded['paths_train']),
                  y_train=loaded['labels_train'],
                  y_test=loaded['labels_test'])
