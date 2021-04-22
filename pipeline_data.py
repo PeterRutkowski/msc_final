@@ -6,7 +6,7 @@ dc = data_converter.DataConverter(vgg19bn.VGG19bn(layers=[60]))
 
 dc.create_split(path='data', save_path='pipeline_data/in10_split')
 
-data_paths = np.load('pipeline_data/in10_split')
+data_paths = np.load('pipeline_data/in10_split.npz')
 
 # labels
 
@@ -22,6 +22,12 @@ dc.perturb(paths=data_paths['paths_train'],
            mode='none')
 
 # testing set
+
+dc.perturb(paths=data_paths['paths_test'],
+           set_type='x_test',
+           save_path='pipeline_data',
+           blur='none',
+           mode='none')
 
 for thr in np.arange(0.03, 0.36, 0.03):
     dc.perturb(paths=data_paths['paths_test'],
