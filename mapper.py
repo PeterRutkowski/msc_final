@@ -2,7 +2,6 @@ import pickle
 import latent_space
 import binarizer
 import multiprocessing as mp
-import weighted_knn
 import numpy as np
 from joblib import Parallel, delayed
 from sklearn.pipeline import Pipeline
@@ -51,7 +50,7 @@ class Mapper:
         
         latent_projector = latent_space.LatentSpace([projector], 'latent_space')
         
-        graphs = Parallel(n_jobs=int(mp.cpu_count()), prefer="threads", verbose=1)(
+        graphs = Parallel(n_jobs=int(mp.cpu_count()/2), prefer="threads", verbose=1)(
             delayed(mapper_pipe[1].fit_transform)(x) for mapper_pipe in mapper_pipes)
         
         x_proj = projector.transform(x)
@@ -63,23 +62,11 @@ class Mapper:
             covers.append([(odc.left_limits_[j], odc.right_limits_[j]) for j in range(n_intervals)])
         
         pickle.dump((latent_projector, graphs, covers), 
-                    open('data2/{}'.format(experiment_name), 'wb'))
+                    open('pipeline_data/mapper_{}'.format(experiment_name), 'wb'))
             
     @staticmethod
-    def get_representations(x_train, x_test_none, x_test_gaussian, y_train, y_test,
-                            k, latent_space, graphs, covers, experiment_name):
+    def get_representations(x, graphs, experiment_name):
         b = binarizer.Binarizer()
-        x_train_rep = b.binarize(x_train, graphs)
+        x_rep = b.binarize(x, graphs)
         
-        #wknn = weighted_knn.WeightedKNN()
-        #x_test_none_rep = wknn.fit_transform(k, x_test_none, x_train, x_train_rep, latent_space, covers)
-        # x_test_gaussian_rep = wknn.fit_transform(k, x_test_gaussian, x_train, x_train_rep, latent_space, covers)
-        x_test_none_rep = np.asarray([])
-        x_test_gaussian_rep = np.asarray([])
-        
-        np.savez('data2/{}'.format(experiment_name), x_train=x_train_rep,
-                 x_test_none=x_test_none_rep, x_test_gaussian=x_test_gaussian_rep, 
-                 y_train=y_train, y_test=y_test)
-        
-        
-        
+        np.savez('pipeline_data/rep_{}'.format(experiment_name), data=x_rep)

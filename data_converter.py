@@ -34,6 +34,6 @@ class DataConverter:
             predictions.append(self.model.predict(Image.fromarray(img, 'RGB')))
 
         np.savez_compressed('{}/images_{}_{}_{}'.format(save_path, set_type, blur, mode),
-                            data=np.asarray(images))
+                            data=np.asarray(images, dtype=object))
         np.savez_compressed('{}/{}_{}_{}'.format(save_path, set_type, blur, mode),
                             data=np.asarray(predictions))

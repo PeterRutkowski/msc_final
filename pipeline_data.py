@@ -6,7 +6,7 @@ dc = data_converter.DataConverter(vgg19bn.VGG19bn(layers=[60]))
 
 dc.create_split(path='data', save_path='pipeline_data/in10_split')
 
-data_paths = np.load('pipeline_data/in10_split')
+data_paths = np.load('pipeline_data/in10_split.npz')
 
 # labels
 

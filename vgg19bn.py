@@ -4,6 +4,7 @@ import numpy as np
 from torchvision.models import vgg19_bn
 from torchvision import transforms
 
+
 class VGG19bn:
     def __init__(self, layers=[57, 60]):
         self.layers = layers
