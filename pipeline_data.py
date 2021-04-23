@@ -23,6 +23,12 @@ dc.perturb(paths=data_paths['paths_train'],
 
 # testing set
 
+dc.perturb(paths=data_paths['paths_test'],
+           set_type='x_test',
+           save_path='pipeline_data',
+           blur='none',
+           mode='none')
+
 for thr in np.arange(0.03, 0.36, 0.03):
     dc.perturb(paths=data_paths['paths_test'],
                set_type='x_test',
