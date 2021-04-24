@@ -50,7 +50,7 @@ class Mapper:
         
         latent_projector = latent_space.LatentSpace([projector], 'latent_space')
         
-        graphs = Parallel(n_jobs=int(mp.cpu_count()/2), prefer="threads", verbose=1)(
+        graphs = Parallel(n_jobs=int(mp.cpu_count()), prefer="threads", verbose=1)(
             delayed(mapper_pipe[1].fit_transform)(x) for mapper_pipe in mapper_pipes)
         
         x_proj = projector.transform(x)
@@ -60,13 +60,13 @@ class Mapper:
                                       n_intervals=n_intervals,
                                       overlap_frac=overlap_frac).fit(x_proj[:, i])
             covers.append([(odc.left_limits_[j], odc.right_limits_[j]) for j in range(n_intervals)])
-        
+
         pickle.dump((latent_projector, graphs, covers), 
                     open('pipeline_data/mapper_{}'.format(experiment_name), 'wb'))
-            
+
     @staticmethod
     def get_representations(x, graphs, experiment_name):
         b = binarizer.Binarizer()
         x_rep = b.binarize(x, graphs)
         
-        np.savez('pipeline_data/rep_{}'.format(experiment_name), data=x_rep)
+        np.savez('pipeline_data/{}/rep_x_train.npz'.format(experiment_name), data=x_rep)

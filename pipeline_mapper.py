@@ -18,7 +18,3 @@ m.fit(x_train, projector=projector, clusterer=clusterer, n_components=n_componen
 
 graphs = pickle.load(open('pipeline_data/mapper_{}'.format(experiment_name), 'rb'))[1]
 m.get_representations(x_train, graphs, experiment_name)
-    
-loaded = np.load('pipeline_data/rep_{}.npz'.format(experiment_name), allow_pickle=True)
-data = loaded['data']
-print(data.shape)
