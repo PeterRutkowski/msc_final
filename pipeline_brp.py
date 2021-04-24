@@ -9,7 +9,7 @@ def component_model(train_data):
     clf = SVC(kernel='poly', degree=2)
     clf.fit(x, y)
 
-    joblib.dump(clf, 'pipeline_data/comp120_dbscan60/model_{}'.format(train_data[2]),
+    joblib.dump(clf, 'pipeline_data/comp240_dbscan200/model_{}'.format(train_data[2]),
                 compress='lzma')
 
     return {test_set: clf.predict(np.load('pipeline_data/{}.npz'.format(test_set),
@@ -51,7 +51,7 @@ def component_model(train_data):
 
 
 x_train = np.load('pipeline_data/x_train_none_none.npz', allow_pickle=True)['data']
-y_train = np.load('pipeline_data/comp120_dbscan60/rep_x_train.npz', allow_pickle=True)['data']
+y_train = np.load('pipeline_data/comp240_dbscan200/rep_x_train.npz', allow_pickle=True)['data']
 
 pool = mp.Pool(int(mp.cpu_count()*0.6))
 dicts = pool.map(component_model, [[x_train, y_train[:, i], i]
@@ -91,5 +91,5 @@ for test_set in ['x_test_none_none',
                  'x_test_salt_pepper_noise_0.27',
                  'x_test_salt_pepper_noise_0.30',
                  'x_test_salt_pepper_noise_0.33']:
-    np.savez('pipeline_data/comp120_dbscan60/rep_{}'.format(test_set),
+    np.savez('pipeline_data/comp240_dbscan200/rep_{}'.format(test_set),
              data=np.asarray([d[test_set] for d in dicts]).T)

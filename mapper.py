@@ -36,9 +36,10 @@ class Mapper:
         
         for i in range(n_components):
             mapper_pipe = make_mapper_pipeline(scaler=None,
-                                               filter_func=Pipeline(steps=[('projector', projector), 
-                                                                           ('proj', Projection(columns=i))],
-                                                                    verbose=1),
+                                               filter_func=Pipeline(
+                                                   steps=[('projector', projector),
+                                                          ('proj', Projection(columns=i))],
+                                                   verbose=1),
                                                cover=OneDimensionalCover(kind=kind,
                                                                          n_intervals=n_intervals,
                                                                          overlap_frac=overlap_frac),
@@ -59,7 +60,8 @@ class Mapper:
             odc = OneDimensionalCover(kind=kind,
                                       n_intervals=n_intervals,
                                       overlap_frac=overlap_frac).fit(x_proj[:, i])
-            covers.append([(odc.left_limits_[j], odc.right_limits_[j]) for j in range(n_intervals)])
+            covers.append([(odc.left_limits_[j], odc.right_limits_[j])
+                           for j in range(n_intervals)])
 
         pickle.dump((latent_projector, graphs, covers), 
                     open('pipeline_data/mapper_{}'.format(experiment_name), 'wb'))
@@ -69,4 +71,4 @@ class Mapper:
         b = binarizer.Binarizer()
         x_rep = b.binarize(x, graphs)
         
-        np.savez('pipeline_data/{}/rep_x_train.npz'.format(experiment_name), data=x_rep)
+        np.savez_compressed('pipeline_data/{}/rep_x_train.npz'.format(experiment_name), data=x_rep)

@@ -4,9 +4,10 @@ import my_pca
 import pickle
 from sklearn.cluster import DBSCAN
 
-experiment_name = 'comp120_dbscan60'
-epsilon = 60
-n_components = 120
+epsilon = 200
+n_components = 240
+experiment_name = 'comp{}_dbscan{}'.format(n_components, epsilon)
+
 clusterer = DBSCAN(eps=epsilon, min_samples=1)
 projector = my_pca.MyPCA(n_components=n_components)
 
