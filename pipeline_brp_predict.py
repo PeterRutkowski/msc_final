@@ -11,9 +11,8 @@ def predict(test_set):
         print(i)
         model = joblib.load('pipeline_data/comp120_dbscan200/model_{}'.format(i))
         brp.append(model.predict(x))
-
-    np.savez_compressed('pipeline_data/comp120_dbscan200/rep_{}_2.npz'.format(test_set),
-                        data=np.asarray(brp).T)
+        np.savez_compressed('pipeline_data/comp120_dbscan200/rep_{}_2.npz'.format(test_set),
+                            data=np.asarray(brp).T)
 
 
 pool = mp.Pool(34)
