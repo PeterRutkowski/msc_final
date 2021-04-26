@@ -8,6 +8,7 @@ def predict(test_set):
     brp = list()
 
     for i in range(1200):
+        print(i)
         model = joblib.load('pipeline_data/comp120_dbscan200/model_{}'.format(i))
         brp.append(model.predict(x))
 

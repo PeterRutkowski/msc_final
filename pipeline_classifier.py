@@ -43,6 +43,6 @@ for degree in [1, 2, 3]:
                      'x_test_salt_pepper_noise_0.27',
                      'x_test_salt_pepper_noise_0.30',
                      'x_test_salt_pepper_noise_0.33']:
-        score = clf.score(np.load('pipeline_data/comp140_dbscan200/rep_{}.npz'.format(test_set),
+        score = clf.score(np.load('pipeline_data/comp120_dbscan200/rep_{}.npz'.format(test_set),
                                   allow_pickle=True)['data'], y_test)
         print(degree, test_set, score)
