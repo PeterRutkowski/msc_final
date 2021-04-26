@@ -29,6 +29,8 @@ todo = [n for n in range(y_train.shape[1])]
 for n in done:
     todo.remove(n)
 
+todo = [362, 645, 1054, 1062, 1186]
 print(todo)
+
 pool = mp.Pool(int(mp.cpu_count()/2))
 pool.map(component_model, [[x_train, y_train[:, i], i] for i in todo])
