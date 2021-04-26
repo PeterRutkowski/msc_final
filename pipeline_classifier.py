@@ -1,7 +1,7 @@
 from sklearn.svm import SVC
 import numpy as np
 
-x_train = np.load('pipeline_data/comp120_dbscan200/rep_x_train.npz', allow_pickle=True)['data']
+x_train = np.load('pipeline_data/comp120_dbscan200/br_x_train.npz', allow_pickle=True)['data']
 y_train = np.load('pipeline_data/y_train.npz', allow_pickle=True)['data']
 y_test = np.load('pipeline_data/y_test.npz', allow_pickle=True)['data']
 
@@ -43,6 +43,6 @@ for degree in [1, 2, 3]:
                      'x_test_salt_pepper_noise_0.27',
                      'x_test_salt_pepper_noise_0.30',
                      'x_test_salt_pepper_noise_0.33']:
-        score = clf.score(np.load('pipeline_data/comp120_dbscan200/rep_{}.npz'.format(test_set),
+        score = clf.score(np.load('pipeline_data/comp120_dbscan200/br_{}.npz'.format(test_set),
                                   allow_pickle=True)['data'], y_test)
         print(degree, test_set, score)
