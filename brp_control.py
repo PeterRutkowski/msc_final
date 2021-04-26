@@ -1,6 +1,8 @@
 import numpy as np
+import joblib
+import multiprocessing as mp
 
-for test_set in ['x_test_none_none',
+'''for test_set in ['x_test_none_none',
                  'x_test_gaussian_blur_0.5',
                  'x_test_gaussian_blur_1.0',
                  'x_test_gaussian_blur_1.5',
@@ -36,4 +38,19 @@ for test_set in ['x_test_none_none',
                  'x_test_salt_pepper_noise_0.33']:
     print(test_set,
           np.load('pipeline_data/comp120_dbscan200/rep_{}.npz'.format(test_set),
-                  allow_pickle=True)['data'].shape)
+                  allow_pickle=True)['data'].shape)'''
+
+
+def bad(ind):
+    try:
+        print(ind)
+        joblib.load('pipeline_data/comp120_dbscan200/model_{}'.format(ind))
+        return -1
+    except EOFError:
+        return ind
+
+
+pool = mp.Pool(70)
+result = pool.map(bad, range(1200))
+
+print(list(np.unique(result)))
