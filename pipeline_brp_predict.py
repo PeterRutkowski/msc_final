@@ -7,12 +7,12 @@ def predict(test_set):
     x = np.load('pipeline_data/{}.npz'.format(test_set), allow_pickle=True)['data']
     brp = list()
 
-    for i in range(1200):
+    for i in range(315, 1200):
         print(i)
         model = joblib.load('pipeline_data/comp120_dbscan200/model_{}'.format(i))
         brp.append(model.predict(x))
 
-    np.savez_compressed('pipeline_data/comp120_dbscan200/rep_{}.npz'.format(test_set),
+    np.savez_compressed('pipeline_data/comp120_dbscan200/rep_{}_2.npz'.format(test_set),
                         data=np.asarray(brp).T)
 
 
