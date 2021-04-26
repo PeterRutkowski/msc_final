@@ -35,5 +35,5 @@ for test_set in ['x_test_none_none',
                  'x_test_salt_pepper_noise_0.30',
                  'x_test_salt_pepper_noise_0.33']:
     print(test_set,
-          np.load('pipeline_data/comp120_dbscan200/{}.npz'.format(test_set),
+          np.load('pipeline_data/comp120_dbscan200/rep_{}.npz'.format(test_set),
                   allow_pickle=True)['data'].shape)
