@@ -12,6 +12,7 @@ def component_model(train_data):
  
     joblib.dump(clf, 'pipeline_data/{}/model_{}'.format(train_data[3], train_data[2]),
                 compress='lzma')
+    print(train_data[2], end=' ')
 
 
 experiments = list()
@@ -37,8 +38,6 @@ for experiment in experiments:
 
     for n in trained:
         to_be_trained.remove(n)
-
-    print(to_be_trained)
 
     pool = mp.Pool(int(mp.cpu_count()))
     pool.map(component_model, [[x_train, y_train[:, i], i, experiment] for i in to_be_trained])
