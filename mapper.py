@@ -64,11 +64,11 @@ class Mapper:
                            for j in range(n_intervals)])
 
         pickle.dump((latent_projector, graphs, covers), 
-                    open('pipeline_data/mapper_{}'.format(experiment_name), 'wb'))
+                    open('pipeline_data/{}/mapper'.format(experiment_name), 'wb'))
 
     @staticmethod
     def get_representations(x, graphs, experiment_name):
         b = binarizer.Binarizer()
         x_rep = b.binarize(x, graphs)
-        
-        np.savez_compressed('pipeline_data/{}/rep_x_train.npz'.format(experiment_name), data=x_rep)
+        print(x_rep.shape)
+        np.savez_compressed('pipeline_data/{}/brp_x_train.npz'.format(experiment_name), data=x_rep)
