@@ -23,7 +23,7 @@ for n_components in [60, 90, 120]:
 for experiment in experiments:
     print(experiment)
     x_train = np.load('pipeline_data/x_train_none_none.npz', allow_pickle=True)['data']
-    y_train = np.load('pipeline_data/{}/rep_x_train.npz'.format(experiment),
+    y_train = np.load('pipeline_data/{}/brp_x_train.npz'.format(experiment),
                       allow_pickle=True)['data']
 
     _, _, filenames = next(walk('pipeline_data/{}'.format(experiment)))
