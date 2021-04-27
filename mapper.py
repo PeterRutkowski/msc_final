@@ -39,19 +39,19 @@ class Mapper:
                                                filter_func=Pipeline(
                                                    steps=[('projector', projector),
                                                           ('proj', Projection(columns=i))],
-                                                   verbose=1),
+                                                   verbose=0),
                                                cover=OneDimensionalCover(kind=kind,
                                                                          n_intervals=n_intervals,
                                                                          overlap_frac=overlap_frac),
                                                clusterer=clusterer,
-                                               verbose=True,
+                                               verbose=False,
                                                n_jobs=1)
             mapper_pipe.set_params(filter_func__proj__columns=i)
             mapper_pipes.append(('comp{}'.format(i+1), mapper_pipe))
         
         latent_projector = latent_space.LatentSpace([projector], 'latent_space')
         
-        graphs = Parallel(n_jobs=int(mp.cpu_count()), prefer="threads", verbose=1)(
+        graphs = Parallel(n_jobs=int(mp.cpu_count()), prefer="threads", verbose=0)(
             delayed(mapper_pipe[1].fit_transform)(x) for mapper_pipe in mapper_pipes)
         
         x_proj = projector.transform(x)
