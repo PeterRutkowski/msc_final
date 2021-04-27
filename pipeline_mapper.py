@@ -8,8 +8,8 @@ from sklearn.cluster import DBSCAN
 
 def mapper_training(n_components, epsilon, n_intervals):
     dir_name = 'pca{}_eps{}_int{}'.format(n_components, epsilon, n_intervals)
-    print(dir_name)
     os.mkdir('pipeline_data/{}'.format(dir_name))
+    print(dir_name)
 
     clusterer = DBSCAN(eps=epsilon, min_samples=1)
     projector = my_pca.MyPCA(n_components=n_components)
@@ -24,20 +24,7 @@ def mapper_training(n_components, epsilon, n_intervals):
     m.get_representations(x_train, graphs, dir_name)
 
 
-#mapper_training(120, 200, 4)
-#mapper_training(120, 200, 7)
-#mapper_training(120, 200, 10)
-#mapper_training(90, 200, 4)
-#mapper_training(90, 200, 7)
-#mapper_training(90, 200, 10)
-#mapper_training(60, 200, 4)
-#mapper_training(60, 200, 7)
-#mapper_training(60, 200, 10)
-
-mapper_training(120, 130, 10)
-mapper_training(120, 110, 10)
-mapper_training(120, 100, 10)
-mapper_training(120, 90, 10)
-mapper_training(120, 80, 10)
-mapper_training(120, 70, 10)
-
+for n_components in [120, 90, 60]:
+    for epsilon in [150, 100]:
+        for n_intervals in [4, 7, 10]:
+            mapper_training(n_components, epsilon, n_intervals)
