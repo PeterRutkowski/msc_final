@@ -12,7 +12,7 @@ def component_model(train_data):
  
     joblib.dump(clf, 'pipeline_data/{}/model_{}'.format(train_data[3], train_data[2]),
                 compress='lzma')
-    print(train_data[2], end=' ')
+    print(train_data[3], train_data[2])
 
 
 experiments = list()
