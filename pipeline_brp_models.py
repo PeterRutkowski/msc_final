@@ -10,27 +10,35 @@ def component_model(train_data):
     clf = SVC(kernel='poly', degree=2)
     clf.fit(x, y)
  
-    joblib.dump(clf, 'pipeline_data/comp120_dbscan200/model_{}'.format(train_data[2]),
+    joblib.dump(clf, 'pipeline_data/{}/model_{}'.format(train_data[3], train_data[2]),
                 compress='lzma')
 
 
-x_train = np.load('pipeline_data/x_train_none_none.npz', allow_pickle=True)['data']
-y_train = np.load('pipeline_data/comp120_dbscan200/rep_x_train.npz', allow_pickle=True)['data']
+experiments = list()
+for n_components in [60, 90, 120]:
+    for epsilon in [150, 100]:
+        for n_intervals in [4, 7, 10]:
+            experiments.append('pca{}_eps{}_int{}'.format(n_components, epsilon, n_intervals))
 
-_, _, filenames = next(walk('pipeline_data/comp120_dbscan200'))
+for experiment in experiments:
+    print(experiment)
+    x_train = np.load('pipeline_data/x_train_none_none.npz', allow_pickle=True)['data']
+    y_train = np.load('pipeline_data/{}/rep_x_train.npz'.format(experiment),
+                      allow_pickle=True)['data']
 
-done = list()
-for filename in filenames:
-    if filename.startswith('model'):
-        done.append(int(filename[6:]))
+    _, _, filenames = next(walk('pipeline_data/{}'.format(experiment)))
 
-todo = [n for n in range(y_train.shape[1])]
+    trained = list()
+    for filename in filenames:
+        if filename.startswith('model'):
+            trained.append(int(filename[6:]))
 
-for n in done:
-    todo.remove(n)
+    to_be_trained = [n for n in range(y_train.shape[1])]
 
-todo = [362, 645, 1054, 1062, 1186]
-print(todo)
+    for n in trained:
+        to_be_trained.remove(n)
 
-pool = mp.Pool(int(mp.cpu_count()/2))
-pool.map(component_model, [[x_train, y_train[:, i], i] for i in todo])
+    print(to_be_trained)
+
+    pool = mp.Pool(int(mp.cpu_count()))
+    pool.map(component_model, [[x_train, y_train[:, i], i, experiment] for i in to_be_trained])
