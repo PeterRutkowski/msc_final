@@ -70,7 +70,7 @@ def combine(test_set):
     print(test_set, c.shape)
 
 
-pool = mp.Pool(70)
+pool = mp.Pool(int(mp.cpu_count()))
 result = pool.map(combine, ['x_test_none_none',
                             'x_test_gaussian_blur_0.5',
                             'x_test_gaussian_blur_1.0',
