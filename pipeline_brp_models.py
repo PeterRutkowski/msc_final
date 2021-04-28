@@ -40,7 +40,7 @@ for experiment in experiments:
     for n in trained:
         to_be_trained.remove(n)
 
-    pool = mp.Pool(70)
+    pool = mp.Pool(65)
     pool.map(component_model, [[x_train, y_train[:, i], i, experiment] for i in to_be_trained])
 
     print(time.strftime("%H:%M:%S", time.localtime()))
