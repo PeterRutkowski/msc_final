@@ -10,11 +10,7 @@ for n_components in [60, 90, 120]:
         for n_intervals in [4, 7, 10]:
             experiments.append('pca{}_eps{}_int{}'.format(n_components, epsilon, n_intervals))
 
-experiments = ['pca15_eps150_int4',
-               'pca30_eps150_int4',
-               'pca45_eps150_int4']
-
-experiments = ['pca15_eps150_int4']
+experiments = ['pca30_eps150_int4']
 
 for experiment in experiments:
     x_train = np.load('pipeline_data/{}/bin_rep_x_train.npz'.format(experiment),
