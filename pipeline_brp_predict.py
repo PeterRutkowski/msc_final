@@ -2,7 +2,7 @@ import numpy as np
 import multiprocessing as mp
 import joblib
 from os import walk
-import datetime
+from datetime import datetime
 
 
 def predict(input_data):
