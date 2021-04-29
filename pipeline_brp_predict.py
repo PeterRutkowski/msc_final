@@ -68,7 +68,8 @@ for experiment in experiments:
             try:
                 os.mkdir('pipeline_data/{}/bin_rep'.format(experiment))
             except FileExistsError:
-                pass
+                shutil.rmtree('pipeline_data/{}/bin_rep'.format(experiment))
+                os.mkdir('pipeline_data/{}/bin_rep'.format(experiment))
             x = np.load('pipeline_data/{}.npz'.format(test_set), allow_pickle=True)['data']
 
             n_features = feature_counter('pipeline_data/{}'.format(experiment))
@@ -76,7 +77,7 @@ for experiment in experiments:
             for i in range(n_features):
                 feature_predictions.append([experiment, i, x, test_set])
 
-            pool = mp.Pool(70)
+            pool = mp.Pool(60)
             pool.map(predict_feature, feature_predictions)
 
             bin_rep = list()
