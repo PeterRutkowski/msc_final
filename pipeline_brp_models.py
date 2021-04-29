@@ -20,7 +20,6 @@ for n_components in [60, 90, 120]:
     for epsilon in [150, 100]:
         for n_intervals in [4, 7, 10]:
             experiments.append('pca{}_eps{}_int{}'.format(n_components, epsilon, n_intervals))
-#experiments = ['pca60_eps150_int4'] #todo
 
 for experiment in experiments:
     print(experiment)
