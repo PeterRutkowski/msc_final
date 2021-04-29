@@ -1,6 +1,8 @@
 from sklearn.svm import SVC
 import numpy as np
 import torch
+import pickle
+import pandas as pd
 
 experiments = list()
 for n_components in [60, 90, 120]:
@@ -16,8 +18,12 @@ for experiment in experiments:
     y_train = np.load('pipeline_data/y_train.npz', allow_pickle=True)['data']
     y_test = np.load('pipeline_data/y_test.npz', allow_pickle=True)['data']
 
-    clf = SVC(kernel='poly', degree=2)
-    clf.fit(x_train, y_train)
+    try:
+        clf = pickle.load(open('pipeline_data/{}/classifier'.format(experiment), 'rb'))
+    except FileNotFoundError:
+        clf = SVC(kernel='poly', degree=2)
+        clf.fit(x_train, y_train)
+        pickle.dump(clf, open('pipeline_data/{}/classifier'.format(experiment), 'wb'))
 
     nn = torch.load('pipeline_data/nn_benchmark.pt', map_location=torch.device('cpu'))
 
@@ -57,12 +63,13 @@ for experiment in experiments:
                      'x_test_salt_pepper_noise_0.27',
                      'x_test_salt_pepper_noise_0.30',
                      'x_test_salt_pepper_noise_0.33']:
+        print(test_set)
         x_test = np.load('pipeline_data/{}/bin_rep_{}.npz'.format(experiment, test_set),
                          allow_pickle=True)['data']
 
         scores.append([' '.join(test_set.split('_')[2:-1]),
                        'Mapper classifier',
-                       test_set.split('_')[-1],
+                       0.0 if test_set.split('_')[-1] == 'none' else test_set.split('_')[-1],
                        clf.score(x_test, y_test)])
 
         nn_x_test = torch.Tensor(np.load('pipeline_data/{}.npz'.format(test_set),
@@ -77,7 +84,8 @@ for experiment in experiments:
 
         scores.append([' '.join(test_set.split('_')[2:-1]),
                        'VGG benchmark',
-                       test_set.split('_')[-1],
+                       0.0 if test_set.split('_')[-1] == 'none' else test_set.split('_')[-1],
                        np.round(eval_score / x_test.shape[0], 3)])
 
-        print(scores)
+    pickle.dump(pd.DataFrame(scores, columns=['noise', 'model', 'noise scale', 'accuracy']),
+                open('pipeline_data/{}/scores'.format(experiment), 'wb'))
