@@ -14,6 +14,8 @@ experiments = ['pca15_eps150_int4',
                'pca30_eps150_int4',
                'pca45_eps150_int4']
 
+experiments = ['pca15_eps150_int4']
+
 for experiment in experiments:
     x_train = np.load('pipeline_data/{}/bin_rep_x_train.npz'.format(experiment),
                       allow_pickle=True)['data']
