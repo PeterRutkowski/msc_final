@@ -14,7 +14,7 @@ def bad(input_data):
 
 
 experiments = list()
-for n_components in [120]:
+for n_components in [60]:
     for epsilon in [150, 100]:
         for n_intervals in [4, 7, 10]:
             experiments.append('pca{}_eps{}_int{}'.format(n_components, epsilon, n_intervals))
