@@ -84,7 +84,12 @@ for experiment in experiments:
             for i in range(n_features):
                 bin_rep.append(np.load('pipeline_data/{}/bin_rep/{}_{}.npz'.format(
                     experiment, test_set, i), allow_pickle=True)['data'])
-            np.savez_compressed('pipeline_data/{}/bin_rep_{}'.format(experiment, test_set))
+            np.savez_compressed('pipeline_data/{}/bin_rep_{}'.format(experiment, test_set),
+                                data=np.asarray(bin_rep).T)
             shutil.rmtree('pipeline_data/{}/bin_rep'.format(experiment))
         end_time = datetime.now()
-        print(experiment, test_set, end_time - start_time)
+        print(experiment,
+              test_set,
+              np.load('pipeline_data/{}/bin_rep_{}.npz'.format(experiment, test_set),
+                      allow_pickle=True)['data'].shape,
+              end_time - start_time)
