@@ -2,7 +2,6 @@ import numpy as np
 import joblib
 import multiprocessing as mp
 from os import walk
-import time
 
 '''for test_set in ['x_test_none_none',
                  'x_test_gaussian_blur_0.5',
@@ -60,7 +59,6 @@ for n_components in [60, 90, 120]:
 
 for experiment in experiments:
     print(experiment)
-    print(time.strftime("%H:%M:%S", time.localtime()))
     _, _, filenames = next(walk('pipeline_data/{}'.format(experiment)))
     trained = list()
     for filename in filenames:
@@ -69,9 +67,7 @@ for experiment in experiments:
     print(len(trained))
     pool = mp.Pool(50)
     result = pool.map(bad, trained)
-    print(time.strftime("%H:%M:%S", time.localtime()))
     print(list(np.unique(result)))
-    print()
 
 
 '''def combine(test_set):
