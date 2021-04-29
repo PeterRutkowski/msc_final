@@ -16,11 +16,11 @@ def component_model(train_data):
 
 
 experiments = list()
-for n_components in [60, 90, 120]:
+for n_components in [90]:#todo
     for epsilon in [150, 100]:
         for n_intervals in [4, 7, 10]:
             experiments.append('pca{}_eps{}_int{}'.format(n_components, epsilon, n_intervals))
-experiments = ['pca60_eps150_int4'] #todo
+#experiments = ['pca60_eps150_int4'] #todo
 
 for experiment in experiments:
     print(experiment)
@@ -40,7 +40,6 @@ for experiment in experiments:
 
     for n in trained:
         to_be_trained.remove(n)
-    to_be_trained = [0, 3, 15, 16, 24, 35] #todo
 
     pool = mp.Pool(60)
     pool.map(component_model, [[x_train, y_train[:, i], i, experiment] for i in to_be_trained])
