@@ -1,5 +1,6 @@
 from sklearn.svm import SVC
 import numpy as np
+import torch
 
 experiments = list()
 for n_components in [60, 90, 120]:
@@ -15,6 +16,8 @@ for experiment in experiments:
 
     clf = SVC(kernel='poly', degree=2)
     clf.fit(x_train, y_train)
+
+    nn = torch.load('pipeline_data/nn_benchmark.pt', map_location=torch.device('cpu'))
 
     scores = list()
 
@@ -52,9 +55,23 @@ for experiment in experiments:
                      'x_test_salt_pepper_noise_0.27',
                      'x_test_salt_pepper_noise_0.30',
                      'x_test_salt_pepper_noise_0.33']:
-        score = clf.score(np.load('pipeline_data/{}/bin_rep_{}.npz'.format(experiment, test_set),
-                                  allow_pickle=True)['data'], y_test)
+        x_test = np.load('pipeline_data/{}/bin_rep_{}.npz'.format(experiment, test_set),
+                         allow_pickle=True)['data']
+
         scores.append([' '.join(test_set.split('_')[2:-1]),
                        'Mapper classifier',
                        test_set.split('_')[-1],
-                       score])
+                       clf.score(x_test, y_test)])
+
+        nn_x_test = torch.Tensor(x_test)
+        nn_y_test = np.squeeze(torch.LongTensor(y_test))
+
+        nn.eval()
+        _, predicted = torch.max(nn(x_test), 1)
+        eval_mask = (predicted == y_test).squeeze()
+        eval_score = eval_mask.sum().item()
+
+        scores.append([' '.join(test_set.split('_')[2:-1]),
+                       'VGG benchmark',
+                       test_set.split('_')[-1],
+                       np.round(eval_score / x_test.shape[0], 3)])
