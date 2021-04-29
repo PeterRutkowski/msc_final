@@ -77,7 +77,7 @@ for experiment in experiments:
             for i in range(n_features):
                 feature_predictions.append([experiment, i, x, test_set])
 
-            pool = mp.Pool(60)
+            pool = mp.Pool(50)
             pool.map(predict_feature, feature_predictions)
 
             bin_rep = list()
