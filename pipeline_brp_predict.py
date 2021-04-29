@@ -28,6 +28,11 @@ for n_components in [60, 90, 120]:
         for n_intervals in [4, 7, 10]:
             experiments.append('pca{}_eps{}_int{}'.format(n_components, epsilon, n_intervals))
 
+
+experiments = ['pca15_eps150_int4',
+               'pca30_eps150_int4',
+               'pca45_eps150_int4']
+
 for experiment in experiments:
     for test_set in ['x_test_none_none',
                      'x_test_gaussian_blur_0.5',
