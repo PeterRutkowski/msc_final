@@ -8,6 +8,8 @@ for n_components in [60, 90, 120]:
         for n_intervals in [4, 7, 10]:
             experiments.append('pca{}_eps{}_int{}'.format(n_components, epsilon, n_intervals))
 
+experiments = ['pca60_eps150_int4']
+
 for experiment in experiments:
     x_train = np.load('pipeline_data/{}/bin_rep_x_train.npz'.format(experiment),
                       allow_pickle=True)['data']
@@ -63,15 +65,19 @@ for experiment in experiments:
                        test_set.split('_')[-1],
                        clf.score(x_test, y_test)])
 
-        nn_x_test = torch.Tensor(x_test)
+        nn_x_test = torch.Tensor(np.load('pipeline_data/{}.npz'.format(test_set),
+                                         allow_pickle=True)['data'])
         nn_y_test = np.squeeze(torch.LongTensor(y_test))
 
         nn.eval()
-        _, predicted = torch.max(nn(x_test), 1)
-        eval_mask = (predicted == y_test).squeeze()
+        outputs = nn(nn_x_test)
+        _, predicted = torch.max(outputs, 1)
+        eval_mask = (predicted == nn_y_test).squeeze()
         eval_score = eval_mask.sum().item()
 
         scores.append([' '.join(test_set.split('_')[2:-1]),
                        'VGG benchmark',
                        test_set.split('_')[-1],
                        np.round(eval_score / x_test.shape[0], 3)])
+
+        print(scores)
