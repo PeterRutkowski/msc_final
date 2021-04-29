@@ -3,7 +3,7 @@ from sklearn.svm import SVC
 import multiprocessing as mp
 import joblib
 from os import walk
-import time
+from datetime import datetime
 
 
 def component_model(train_data):
@@ -26,8 +26,8 @@ experiments = ['pca15_eps150_int4',
                'pca45_eps150_int4']
 
 for experiment in experiments:
-    print(experiment)
-    print(time.strftime("%H:%M:%S", time.localtime()))
+    print(experiment, end=' ')
+    start_time = datetime.now()
     x_train = np.load('pipeline_data/x_train_none_none.npz', allow_pickle=True)['data']
     y_train = np.load('pipeline_data/{}/bin_rep_x_train.npz'.format(experiment),
                       allow_pickle=True)['data']
@@ -47,4 +47,5 @@ for experiment in experiments:
     pool = mp.Pool(60)
     pool.map(component_model, [[x_train, y_train[:, i], i, experiment] for i in to_be_trained])
 
-    print(time.strftime("%H:%M:%S", time.localtime()))
+    end_time = datetime.now()
+    print(end_time - start_time)
