@@ -67,7 +67,7 @@ for experiment in experiments:
         if filename.startswith('model'):
             trained.append([int(filename[6:]), experiment])
     print(len(trained))
-    pool = mp.Pool(70)
+    pool = mp.Pool(50)
     result = pool.map(bad, trained)
     print(time.strftime("%H:%M:%S", time.localtime()))
     print(list(np.unique(result)))
