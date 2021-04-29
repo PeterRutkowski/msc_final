@@ -1,13 +1,22 @@
 from sklearn.svm import SVC
 import numpy as np
 
-x_train = np.load('pipeline_data/comp120_dbscan200/br_x_train.npz', allow_pickle=True)['data']
-y_train = np.load('pipeline_data/y_train.npz', allow_pickle=True)['data']
-y_test = np.load('pipeline_data/y_test.npz', allow_pickle=True)['data']
+experiments = list()
+for n_components in [60, 90, 120]:
+    for epsilon in [150, 100]:
+        for n_intervals in [4, 7, 10]:
+            experiments.append('pca{}_eps{}_int{}'.format(n_components, epsilon, n_intervals))
 
-for degree in [1, 2, 3]:
-    clf = SVC(kernel='poly', degree=degree)
+for experiment in experiments:
+    x_train = np.load('pipeline_data/{}/bin_rep_x_train.npz'.format(experiment),
+                      allow_pickle=True)['data']
+    y_train = np.load('pipeline_data/y_train.npz', allow_pickle=True)['data']
+    y_test = np.load('pipeline_data/y_test.npz', allow_pickle=True)['data']
+
+    clf = SVC(kernel='poly', degree=2)
     clf.fit(x_train, y_train)
+
+    scores = list()
 
     for test_set in ['x_test_none_none',
                      'x_test_gaussian_blur_0.5',
@@ -43,6 +52,9 @@ for degree in [1, 2, 3]:
                      'x_test_salt_pepper_noise_0.27',
                      'x_test_salt_pepper_noise_0.30',
                      'x_test_salt_pepper_noise_0.33']:
-        score = clf.score(np.load('pipeline_data/comp120_dbscan200/br_{}.npz'.format(test_set),
+        score = clf.score(np.load('pipeline_data/{}/bin_rep_{}.npz'.format(experiment, test_set),
                                   allow_pickle=True)['data'], y_test)
-        print(degree, test_set, score)
+        scores.append([' '.join(test_set.split('_')[2:-1]),
+                       'Mapper classifier',
+                       test_set.split('_')[-1],
+                       score])
