@@ -1,6 +1,8 @@
 import numpy as np
 import joblib
 import multiprocessing as mp
+from os import walk
+import time
 
 '''for test_set in ['x_test_none_none',
                  'x_test_gaussian_blur_0.5',
@@ -41,22 +43,38 @@ import multiprocessing as mp
                   allow_pickle=True)['data'].shape)'''
 
 
-'''def bad(ind):
+def bad(input_data):
+    ind, exp = input_data[0], input_data[1]
     try:
-        print(ind)
-        joblib.load('pipeline_data/comp120_dbscan200/model_{}'.format(ind))
+        joblib.load('pipeline_data/{}/model_{}'.format(exp, ind))
         return -1
     except EOFError:
         return ind
 
 
-pool = mp.Pool(70)
-result = pool.map(bad, range(1200))
+experiments = list()
+for n_components in [60, 90, 120]:
+    for epsilon in [150, 100]:
+        for n_intervals in [4, 7, 10]:
+            experiments.append('pca{}_eps{}_int{}'.format(n_components, epsilon, n_intervals))
 
-print(list(np.unique(result)))'''
+for experiment in experiments:
+    print(experiment)
+    print(time.strftime("%H:%M:%S", time.localtime()))
+    _, _, filenames = next(walk('pipeline_data/{}'.format(experiment)))
+    trained = list()
+    for filename in filenames:
+        if filename.startswith('model'):
+            trained.append([int(filename[6:]), experiment])
+    print(len(trained))
+    pool = mp.Pool(70)
+    result = pool.map(bad, trained)
+    print(time.strftime("%H:%M:%S", time.localtime()))
+    print(list(np.unique(result)))
+    print()
 
 
-def combine(test_set):
+'''def combine(test_set):
     a = np.load('pipeline_data/comp120_dbscan200/rep_{}.npz'.format(test_set),
                 allow_pickle=True)['data']
     b = np.load('pipeline_data/comp120_dbscan200/rep_{}_2.npz'.format(test_set),
@@ -105,3 +123,4 @@ result = pool.map(combine, ['x_test_none_none',
                             'x_test_salt_pepper_noise_0.27',
                             'x_test_salt_pepper_noise_0.30',
                             'x_test_salt_pepper_noise_0.33'])
+'''
