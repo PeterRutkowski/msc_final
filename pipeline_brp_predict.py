@@ -34,17 +34,17 @@ experiments = ['pca60_eps125_int4',
 
 for experiment in experiments:
     for test_set in ['x_test_none_none',
-                 'x_test_gaussian_blur_0.5',
-                 'x_test_gaussian_blur_1.0',
-                 'x_test_gaussian_blur_1.5',
-                 'x_test_gaussian_blur_2.0',
-                 'x_test_gaussian_blur_2.5',
-                 'x_test_gaussian_blur_3.0',
-                 'x_test_gaussian_blur_3.5',
-                 'x_test_gaussian_blur_4.0',
-                 'x_test_gaussian_blur_4.5',
-                 'x_test_gaussian_blur_5.0',
-                 'x_test_gaussian_blur_5.5']:
+                     'x_test_gaussian_blur_0.5',
+                     'x_test_gaussian_blur_1.0',
+                     'x_test_gaussian_blur_1.5',
+                     'x_test_gaussian_blur_2.0',
+                     'x_test_gaussian_blur_2.5',
+                     'x_test_gaussian_blur_3.0',
+                     'x_test_gaussian_blur_3.5',
+                     'x_test_gaussian_blur_4.0',
+                     'x_test_gaussian_blur_4.5',
+                     'x_test_gaussian_blur_5.0',
+                     'x_test_gaussian_blur_5.5']:
         start_time = datetime.now()
         if not os.path.isfile('pipeline_data/{}/bin_rep_{}.npz'.format(experiment, test_set)):
             try:
