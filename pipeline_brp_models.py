@@ -10,20 +10,20 @@ def component_model(train_data):
     x, y = train_data[0], train_data[1]
     clf = SVC(kernel='poly', degree=2)
     clf.fit(x, y)
- 
-    joblib.dump(clf, 'pipeline_data/{}/model_{}'.format(train_data[3], train_data[2]),
-                compress='lzma')
+
+    with open('pipeline_data/{}/model_{}'.format(train_data[3], train_data[2]), 'wb') as f:
+        joblib.dump(clf, f, compress='zlib')
 
 
-experiments = list()
-for n_components in [60, 90, 120]:
-    for epsilon in [150, 100]:
-        for n_intervals in [4, 7, 10]:
-            experiments.append('pca{}_eps{}_int{}'.format(n_components, epsilon, n_intervals))
-
-experiments = ['pca15_eps150_int4',
-               'pca30_eps150_int4',
-               'pca45_eps150_int4']
+experiments = ['pca60_eps100_int4',
+               'pca60_eps100_int7',
+               'pca60_eps100_int10',
+               'pca60_eps125_int4',
+               'pca60_eps125_int7',
+               'pca60_eps125_int10',
+               'pca60_eps150_int4',
+               'pca60_eps150_int7',
+               'pca60_eps150_int10']
 
 for experiment in experiments:
     print(experiment, end=' ')
@@ -44,7 +44,7 @@ for experiment in experiments:
     for n in trained:
         to_be_trained.remove(n)
 
-    pool = mp.Pool(60)
+    pool = mp.Pool(70 if mp.cpu_count() > 70 else mp.cpu_count())
     pool.map(component_model, [[x_train, y_train[:, i], i, experiment] for i in to_be_trained])
 
     end_time = datetime.now()
