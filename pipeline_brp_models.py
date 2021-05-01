@@ -2,33 +2,83 @@ import numpy as np
 from sklearn.svm import SVC
 import multiprocessing as mp
 import joblib
+import os
+import shutil
 from os import walk
 from datetime import datetime
 
 
+def feature_counter(path):
+    counter = 0
+    _, _, filenames = next(os.walk(path))
+    for filename in filenames:
+        if filename.startswith('model'):
+            counter += 1
+    return counter
+
+
 def component_model(train_data):
+    start_time = datetime.now()
     x, y = train_data[0], train_data[1]
+    index, experiment = train_data[2], train_data[3]
     clf = SVC(kernel='poly', degree=2)
     clf.fit(x, y)
- 
-    joblib.dump(clf, 'pipeline_data/{}/model_{}'.format(train_data[3], train_data[2]),
-                compress='lzma')
+
+    for test_set in ['x_test_none_none',
+                     'x_test_gaussian_blur_0.5',
+                     'x_test_gaussian_blur_1.0',
+                     'x_test_gaussian_blur_1.5',
+                     'x_test_gaussian_blur_2.0',
+                     'x_test_gaussian_blur_2.5',
+                     'x_test_gaussian_blur_3.0',
+                     'x_test_gaussian_blur_3.5',
+                     'x_test_gaussian_blur_4.0',
+                     'x_test_gaussian_blur_4.5',
+                     'x_test_gaussian_blur_5.0',
+                     'x_test_gaussian_blur_5.5']:
+        if not os.path.isfile('pipeline_data/{}/bin_rep_{}.npz'.format(experiment, test_set)):
+            try:
+                os.mkdir('pipeline_data/{}/bin_rep'.format(experiment))
+            except FileExistsError:
+                shutil.rmtree('pipeline_data/{}/bin_rep'.format(experiment))
+                os.mkdir('pipeline_data/{}/bin_rep'.format(experiment))
+            x_test = np.load('pipeline_data/{}.npz'.format(test_set), allow_pickle=True)['data']
+
+            n_features = feature_counter('pipeline_data/{}'.format(experiment))
+            feature_predictions = list()
+            for i in range(n_features):
+                np.savez_compressed('pipeline_data/{}/bin_rep/{}_{}'.format(experiment, test_set, index),
+                                    data=np.asarray(clf.predict(x_test)).T)
+                feature_predictions.append([experiment, i, x, test_set])
+
+            bin_rep = list()
+            for i in range(n_features):
+                bin_rep.append(np.load('pipeline_data/{}/bin_rep/{}_{}.npz'.format(
+                    experiment, test_set, i), allow_pickle=True)['data'])
+            np.savez_compressed('pipeline_data/{}/bin_rep_{}'.format(experiment, test_set),
+                                data=np.asarray(bin_rep).T)
+            shutil.rmtree('pipeline_data/{}/bin_rep'.format(experiment))
+
+    with open('pipeline_data/{}/model_{}'.format(train_data[3], train_data[2]), 'wb') as f:
+        joblib.dump(clf, f, compress='lzma')
+    print(datetime.now() - start_time)
 
 
-experiments = list()
-for n_components in [60, 90, 120]:
-    for epsilon in [150, 100]:
-        for n_intervals in [4, 7, 10]:
-            experiments.append('pca{}_eps{}_int{}'.format(n_components, epsilon, n_intervals))
+experiments = ['pca60_eps125_int4',
+               'pca60_eps125_int7',
+               'pca60_eps125_int10',
+               'pca60_eps125_int4',
+               'pca60_eps125_int7',
+               'pca60_eps125_int10',
+               'pca60_eps125_int4',
+               'pca60_eps125_int7',
+               'pca60_eps125_int10']
 
-experiments = ['pca15_eps150_int4',
-               'pca30_eps150_int4',
-               'pca45_eps150_int4']
+x_train = np.load('pipeline_data/x_train_none_none.npz', allow_pickle=True)['data']
 
 for experiment in experiments:
     print(experiment, end=' ')
     start_time = datetime.now()
-    x_train = np.load('pipeline_data/x_train_none_none.npz', allow_pickle=True)['data']
     y_train = np.load('pipeline_data/{}/bin_rep_x_train.npz'.format(experiment),
                       allow_pickle=True)['data']
 
@@ -44,7 +94,7 @@ for experiment in experiments:
     for n in trained:
         to_be_trained.remove(n)
 
-    pool = mp.Pool(60)
+    pool = mp.Pool(70 if int(mp.cpu_count()) > 70 else mp.cpu_count())
     pool.map(component_model, [[x_train, y_train[:, i], i, experiment] for i in to_be_trained])
 
     end_time = datetime.now()
