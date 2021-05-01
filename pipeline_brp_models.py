@@ -64,15 +64,15 @@ def component_model(train_data):
     print(datetime.now() - start_time)
 
 
-experiments = ['pca60_eps125_int4',
+experiments = ['pca60_eps100_int4',
                'pca60_eps125_int7',
-               'pca60_eps125_int10',
-               'pca60_eps125_int4',
+               'pca60_eps150_int10',
+               'pca60_eps100_int4',
                'pca60_eps125_int7',
-               'pca60_eps125_int10',
-               'pca60_eps125_int4',
+               'pca60_eps150_int10',
+               'pca60_eps100_int4',
                'pca60_eps125_int7',
-               'pca60_eps125_int10']
+               'pca60_eps150_int10']
 
 x_train = np.load('pipeline_data/x_train_none_none.npz', allow_pickle=True)['data']
 
