@@ -63,8 +63,8 @@ class Mapper:
             covers.append([(odc.left_limits_[j], odc.right_limits_[j])
                            for j in range(n_intervals)])
 
-        pickle.dump((latent_projector, graphs, covers), 
-                    open('pipeline_data/{}/mapper'.format(experiment_name), 'wb'))
+        with open('pipeline_data/{}/mapper'.format(experiment_name), 'wb') as f:
+            pickle.dump((latent_projector, graphs, covers), f)
 
     @staticmethod
     def get_representations(x, graphs, experiment_name):
