@@ -36,28 +36,15 @@ def component_model(train_data):
                      'x_test_gaussian_blur_4.5',
                      'x_test_gaussian_blur_5.0',
                      'x_test_gaussian_blur_5.5']:
-        if not os.path.isfile('pipeline_data/{}/bin_rep_{}.npz'.format(experiment, test_set)):
-            try:
-                os.mkdir('pipeline_data/{}/bin_rep'.format(experiment))
-            except FileExistsError:
-                shutil.rmtree('pipeline_data/{}/bin_rep'.format(experiment))
-                os.mkdir('pipeline_data/{}/bin_rep'.format(experiment))
+
             x_test = np.load('pipeline_data/{}.npz'.format(test_set), allow_pickle=True)['data']
 
             n_features = feature_counter('pipeline_data/{}'.format(experiment))
-            feature_predictions = list()
             for i in range(n_features):
-                np.savez_compressed('pipeline_data/{}/bin_rep/{}_{}'.format(experiment, test_set, index),
+                np.savez_compressed('pipeline_data/{}/bin_rep/{}_{}'.format(experiment,
+                                                                            test_set,
+                                                                            index),
                                     data=np.asarray(clf.predict(x_test)).T)
-                feature_predictions.append([experiment, i, x, test_set])
-
-            bin_rep = list()
-            for i in range(n_features):
-                bin_rep.append(np.load('pipeline_data/{}/bin_rep/{}_{}.npz'.format(
-                    experiment, test_set, i), allow_pickle=True)['data'])
-            np.savez_compressed('pipeline_data/{}/bin_rep_{}'.format(experiment, test_set),
-                                data=np.asarray(bin_rep).T)
-            shutil.rmtree('pipeline_data/{}/bin_rep'.format(experiment))
 
     with open('pipeline_data/{}/model_{}'.format(train_data[3], train_data[2]), 'wb') as f:
         joblib.dump(clf, f, compress='lzma')
@@ -93,6 +80,11 @@ for experiment in experiments:
 
     for n in trained:
         to_be_trained.remove(n)
+
+    try:
+        os.mkdir('pipeline_data/{}/bin_rep'.format(experiment))
+    except FileExistsError:
+        pass
 
     pool = mp.Pool(70 if int(mp.cpu_count()) > 70 else mp.cpu_count())
     pool.map(component_model, [[x_train, y_train[:, i], i, experiment] for i in to_be_trained])
