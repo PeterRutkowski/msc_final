@@ -24,7 +24,12 @@ def mapper_training(n_components, epsilon, n_intervals):
     m.get_representations(x_train, graphs, dir_name)
 
 
-for n_components in [15, 30, 45]:
-    for epsilon in [150]:
-        for n_intervals in [4]:
-            mapper_training(n_components, epsilon, n_intervals)
+mapper_training(60, 100, 4)
+mapper_training(60, 100, 7)
+mapper_training(60, 100, 10)
+mapper_training(60, 125, 4)
+mapper_training(60, 125, 7)
+mapper_training(60, 125, 10)
+mapper_training(60, 150, 4)
+mapper_training(60, 150, 7)
+mapper_training(60, 150, 10)
