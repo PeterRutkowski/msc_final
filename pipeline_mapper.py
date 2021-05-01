@@ -20,7 +20,9 @@ def mapper_training(n_components, epsilon, n_intervals):
     m.fit(x_train, projector=projector, clusterer=clusterer, n_components=n_components,
           n_intervals=n_intervals, experiment_name=dir_name, kind='uniform')
 
-    graphs = pickle.load(open('pipeline_data/{}/mapper'.format(dir_name), 'rb'))[1]
+    with open('pipeline_data/{}/mapper'.format(dir_name), 'rb') as f:
+        graphs = pickle.load(f)[1]
+
     m.get_representations(x_train, graphs, dir_name)
 
 
