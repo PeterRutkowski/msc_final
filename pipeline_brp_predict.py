@@ -18,8 +18,8 @@ def feature_counter(path):
 def predict_feature(input_data):
     exp, index, x_test, test_name = input_data[0], input_data[1], input_data[2], input_data[3]
 
-    with joblib.load('pipeline_data/{}/model_{}'.format(exp, index)) as f:
-        model = f
+    with open('pipeline_data/{}/model_{}'.format(exp, index), 'rb') as f:
+        model = joblib.load(f)
     np.savez_compressed('pipeline_data/{}/bin_rep/{}_{}'.format(exp, test_set, index),
                         data=np.asarray(model.predict(x_test)).T)
 
