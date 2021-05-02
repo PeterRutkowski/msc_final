@@ -17,20 +17,22 @@ def feature_counter(path):
 
 def predict_feature(input_data):
     exp, index, x_test, test_name = input_data[0], input_data[1], input_data[2], input_data[3]
-    model = joblib.load('pipeline_data/{}/model_{}'.format(exp, index))
+
+    with joblib.load('pipeline_data/{}/model_{}'.format(exp, index)) as f:
+        model = f
     np.savez_compressed('pipeline_data/{}/bin_rep/{}_{}'.format(exp, test_set, index),
                         data=np.asarray(model.predict(x_test)).T)
 
 
-experiments = ['pca60_eps125_int4',
-               'pca60_eps125_int7',
-               'pca60_eps125_int10',
+experiments = ['pca60_eps100_int4',
+               'pca60_eps100_int7',
+               'pca60_eps100_int10',
                'pca60_eps125_int4',
                'pca60_eps125_int7',
                'pca60_eps125_int10',
-               'pca60_eps125_int4',
-               'pca60_eps125_int7',
-               'pca60_eps125_int10']
+               'pca60_eps150_int4',
+               'pca60_eps150_int7',
+               'pca60_eps150_int10']
 
 for experiment in experiments:
     for test_set in ['x_test_none_none',
@@ -52,7 +54,9 @@ for experiment in experiments:
             except FileExistsError:
                 shutil.rmtree('pipeline_data/{}/bin_rep'.format(experiment))
                 os.mkdir('pipeline_data/{}/bin_rep'.format(experiment))
-            x = np.load('pipeline_data/{}.npz'.format(test_set), allow_pickle=True)['data']
+
+            with np.load('pipeline_data/{}.npz'.format(test_set), allow_pickle=True) as f:
+                x = f['data']
 
             n_features = feature_counter('pipeline_data/{}'.format(experiment))
             feature_predictions = list()
@@ -64,8 +68,10 @@ for experiment in experiments:
 
             bin_rep = list()
             for i in range(n_features):
-                bin_rep.append(np.load('pipeline_data/{}/bin_rep/{}_{}.npz'.format(
-                    experiment, test_set, i), allow_pickle=True)['data'])
+                with np.load('pipeline_data/{}/bin_rep/{}_{}.npz'.format(
+                        experiment, test_set, i), allow_pickle=True) as f:
+                    bin_rep.append(f['data'])
+
             np.savez_compressed('pipeline_data/{}/bin_rep_{}'.format(experiment, test_set),
                                 data=np.asarray(bin_rep).T)
             shutil.rmtree('pipeline_data/{}/bin_rep'.format(experiment))
