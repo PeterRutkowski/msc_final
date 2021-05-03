@@ -92,7 +92,7 @@ with open('pipeline_data/plots.html', 'a') as f:
 
         fig_plotly.add_trace(
             plot(experiment, 'gaussian blur'),
-            row=9 % exp_index, col=9 // exp_index
+            row=9 % (exp_index+1), col=9 // (exp_index+1)
         )
 
         fig_plotly.write_html('pipeline_data/plots.html')
