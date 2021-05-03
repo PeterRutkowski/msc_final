@@ -29,8 +29,6 @@ experiments = ['pca60_eps100_int4',
                'pca60_eps150_int7',
                'pca60_eps150_int10']
 
-fig_plotly = make_subplots(rows=3, cols=3)
-
 with open('pipeline_data/plots.html', 'a') as f:
     for exp_index, experiment in enumerate(experiments):
         if not os.path.isfile('pipeline_data/{}/scores'.format(experiment)):
@@ -90,11 +88,4 @@ with open('pipeline_data/plots.html', 'a') as f:
             pickle.dump(pd.DataFrame(scores, columns=['noise', 'model', 'noise scale', 'accuracy']),
                         open('pipeline_data/{}/scores'.format(experiment), 'wb'))
 
-        fig_plotly.add_trace(
-            plot(experiment, 'gaussian blur'),
-            row=9 % (exp_index+1), col=9 // (exp_index+1)
-        )
-
-        fig_plotly.write_html('pipeline_data/plots.html')
-
-        # f.write(plot(experiment, 'gaussian blur').to_html(full_html=False, include_plotlyjs='cdn'))
+        f.write(plot(experiment, 'gaussian blur').to_html(full_html=False, include_plotlyjs='cdn'))
