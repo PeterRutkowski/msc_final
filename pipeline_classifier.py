@@ -80,9 +80,9 @@ with open('pipeline_data/plots.html', 'a') as f:
                            0.0 if test_set.split('_')[-1] == 'none' else test_set.split('_')[-1],
                            np.round(eval_score / x_test.shape[0], 3)])
 
+            print(experiment, test_set)
+
         pickle.dump(pd.DataFrame(scores, columns=['noise', 'model', 'noise scale', 'accuracy']),
                     open('pipeline_data/{}/scores'.format(experiment), 'wb'))
 
         f.write(plot(experiment, 'gaussian blur').to_html(full_html=False, include_plotlyjs='cdn'))
-
-        print(experiment, test_set)
