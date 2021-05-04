@@ -26,5 +26,5 @@ def mapper_training(n_components, epsilon, n_intervals):
     m.get_representations(x_train, graphs, dir_name)
 
 
-mapper_training(60, 90, 7)
-mapper_training(60, 80, 7)
+mapper_training(60, 85, 4)
+mapper_training(60, 85, 7)
