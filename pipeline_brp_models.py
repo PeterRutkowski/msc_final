@@ -15,15 +15,10 @@ def component_model(train_data):
         joblib.dump(clf, f, compress='zlib')
 
 
-experiments = ['pca60_eps100_int4',
-               'pca60_eps100_int7',
-               'pca60_eps100_int10',
-               'pca60_eps125_int4',
-               'pca60_eps125_int7',
-               'pca60_eps125_int10',
-               'pca60_eps150_int4',
-               'pca60_eps150_int7',
-               'pca60_eps150_int10']
+experiments = ['pca60_eps85_int4',
+               'pca60_eps85_int7',
+               'pca60_eps90_int4',
+               'pca60_eps90_int7']
 
 for experiment in experiments:
     print(experiment, end=' ')
