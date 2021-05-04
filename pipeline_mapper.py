@@ -26,12 +26,6 @@ def mapper_training(n_components, epsilon, n_intervals):
     m.get_representations(x_train, graphs, dir_name)
 
 
-mapper_training(60, 100, 4)
-mapper_training(60, 100, 7)
-mapper_training(60, 100, 10)
-mapper_training(60, 125, 4)
-mapper_training(60, 125, 7)
-mapper_training(60, 125, 10)
-mapper_training(60, 150, 4)
-mapper_training(60, 150, 7)
-mapper_training(60, 150, 10)
+mapper_training(60, 90, 4)
+mapper_training(60, 80, 4)
+mapper_training(60, 70, 4)
