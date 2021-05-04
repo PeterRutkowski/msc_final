@@ -22,7 +22,7 @@ def plot(experiment_name, noise_type):
 experiments = ['pca60_eps100_int4',
                'pca60_eps90_int4',
                'pca60_eps85_int4',
-               'pca60_eps100_int7'
+               'pca60_eps100_int7',
                'pca60_eps90_int7',
                'pca60_eps85_int7']
 
