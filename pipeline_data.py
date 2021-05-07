@@ -1,8 +1,8 @@
-import data_converter
+import data_converter as dc
 import vgg19bn
 import numpy as np
 
-dc = data_converter.DataConverter(vgg19bn.VGG19bn(layers=[53]))
+vgg = vgg19bn.VGG19bn(layers=[53])
 
 dc.create_split(path='data/in10', save_path='data/in10_split')
 
