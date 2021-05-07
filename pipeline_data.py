@@ -15,8 +15,7 @@ np.savez_compressed('data/y_test', data=data_paths['labels_test'])
 
 # training set
 
-dc.perturb(model=vgg,
-           paths=data_paths['paths_train'],
+dc.perturb(paths=data_paths['paths_train'],
            set_type='x_train',
            save_path='data',
            blur='none',
@@ -24,32 +23,28 @@ dc.perturb(model=vgg,
 
 # testing set
 
-dc.perturb(model=vgg,
-           paths=data_paths['paths_test'],
+dc.perturb(paths=data_paths['paths_test'],
            set_type='x_test',
            save_path='data',
            blur='none',
            mode='none')
 
 '''for thr in np.arange(0.03, 0.36, 0.03):
-    dc.perturb(model=vgg,
-               paths=data_paths['paths_test'],
+    dc.perturb(paths=data_paths['paths_test'],
                set_type='x_test',
                save_path='data',
                blur='salt_pepper_noise',
                mode=thr)'''
 
 '''for sd in np.arange(10, 120, 10):
-    dc.perturb(model=vgg,
-               paths=data_paths['paths_test'],
+    dc.perturb(paths=data_paths['paths_test'],
                set_type='x_test',
                save_path='data',
                blur='gaussian_noise',
                mode=sd)'''
 
 for sigma in np.arange(0.5, 6, 0.5):
-    dc.perturb(model=vgg,
-               paths=data_paths['paths_test'],
+    dc.perturb(paths=data_paths['paths_test'],
                set_type='x_test',
                save_path='data',
                blur='gaussian_blur',
