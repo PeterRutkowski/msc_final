@@ -22,7 +22,7 @@ class DataSplit:
         
         return [os.path.join(root, filename) for filename in filenames]
         
-    def save_split(self, path, save_path='in10/in10_split', test_size=3/13, random_state=69):
+    def save_split(self, path, save_path='data/in10_split', test_size=3/13, random_state=69):
         root, foldernames, filenames = next(os.walk(path))
         paths, labels = [], []
         for foldername in foldernames:
