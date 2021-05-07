@@ -30,9 +30,9 @@ with open('pipeline_data/plots.html', 'a') as f:
     for exp_index, experiment in enumerate(experiments):
         if not os.path.isfile('pipeline_data/{}/scores'.format(experiment)):
             x_train = np.load('pipeline_data/{}/bin_rep_x_train.npz'.format(experiment),
-                              allow_pickle=True)['data']
-            y_train = np.load('pipeline_data/y_train.npz', allow_pickle=True)['data']
-            y_test = np.load('pipeline_data/y_test.npz', allow_pickle=True)['data']
+                              allow_pickle=True)['in10']
+            y_train = np.load('pipeline_data/y_train.npz', allow_pickle=True)['in10']
+            y_test = np.load('pipeline_data/y_test.npz', allow_pickle=True)['in10']
 
             try:
                 clf = pickle.load(open('pipeline_data/{}/classifier'.format(experiment), 'rb'))
@@ -58,7 +58,7 @@ with open('pipeline_data/plots.html', 'a') as f:
                              'x_test_gaussian_blur_5.0',
                              'x_test_gaussian_blur_5.5']:
                 x_test = np.load('pipeline_data/{}/bin_rep_{}.npz'.format(experiment, test_set),
-                                 allow_pickle=True)['data']
+                                 allow_pickle=True)['in10']
 
                 scores.append([' '.join(test_set.split('_')[2:-1]),
                                'Mapper classifier',
@@ -66,7 +66,7 @@ with open('pipeline_data/plots.html', 'a') as f:
                                clf.score(x_test, y_test)])
 
                 nn_x_test = torch.Tensor(np.load('pipeline_data/{}.npz'.format(test_set),
-                                                 allow_pickle=True)['data'])
+                                                 allow_pickle=True)['in10'])
                 nn_y_test = np.squeeze(torch.LongTensor(y_test))
 
                 nn.eval()

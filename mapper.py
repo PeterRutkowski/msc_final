@@ -71,4 +71,5 @@ class Mapper:
         b = binarizer.Binarizer()
         x_rep = b.binarize(x, graphs)
         print(x_rep.shape)
-        np.savez_compressed('pipeline_data/{}/bin_rep_x_train.npz'.format(experiment_name), data=x_rep)
+        np.savez_compressed('pipeline_data/{}/bin_rep_x_train.npz'.format(experiment_name),
+                            data=x_rep)

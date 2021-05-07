@@ -34,14 +34,14 @@ for experiment in experiments:
 
 '''def combine(test_set):
     a = np.load('pipeline_data/comp120_dbscan200/rep_{}.npz'.format(test_set),
-                allow_pickle=True)['data']
+                allow_pickle=True)['in10']
     b = np.load('pipeline_data/comp120_dbscan200/rep_{}_2.npz'.format(test_set),
-                allow_pickle=True)['data']
+                allow_pickle=True)['in10']
 
     c = np.concatenate((a, b), axis=1)
 
     np.savez_compressed('pipeline_data/comp120_dbscan200/br_{}'.format(test_set),
-                        data=c)
+                        in10=c)
 
     print(test_set, c.shape)
 

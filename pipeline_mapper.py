@@ -14,7 +14,7 @@ def mapper_training(n_components, epsilon, n_intervals):
     clusterer = DBSCAN(eps=epsilon, min_samples=1)
     projector = my_pca.MyPCA(n_components=n_components)
 
-    x_train = np.load('pipeline_data/x_train_none_none.npz', allow_pickle=True)['data']
+    x_train = np.load('pipeline_data/x_train_none_none.npz', allow_pickle=True)['in10']
 
     m = mapper.Mapper()
     m.fit(x_train, projector=projector, clusterer=clusterer, n_components=n_components,

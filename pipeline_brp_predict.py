@@ -50,7 +50,7 @@ for experiment in experiments:
                 os.mkdir('pipeline_data/{}/bin_rep'.format(experiment))
 
             with np.load('pipeline_data/{}.npz'.format(test_set), allow_pickle=True) as f:
-                x = f['data']
+                x = f['in10']
 
             n_features = feature_counter('pipeline_data/{}'.format(experiment))
             feature_predictions = list()
@@ -64,7 +64,7 @@ for experiment in experiments:
             for i in range(n_features):
                 with np.load('pipeline_data/{}/bin_rep/{}_{}.npz'.format(
                         experiment, test_set, i), allow_pickle=True) as f:
-                    bin_rep.append(f['data'])
+                    bin_rep.append(f['in10'])
 
             np.savez_compressed('pipeline_data/{}/bin_rep_{}'.format(experiment, test_set),
                                 data=np.asarray(bin_rep).T)
@@ -73,5 +73,5 @@ for experiment in experiments:
         print(experiment,
               test_set,
               np.load('pipeline_data/{}/bin_rep_{}.npz'.format(experiment, test_set),
-                      allow_pickle=True)['data'].shape,
+                      allow_pickle=True)['in10'].shape,
               end_time - start_time)

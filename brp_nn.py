@@ -67,8 +67,8 @@ def component_model(x_train, y_train, x_test, exp, i):
     return np.exp(model(x_test).detach().numpy())[:, 1]
 
 def BRP(exp):
-    l = np.load('data/in10_split_converted.npz',
-              allow_pickle=True)
+    l = np.load('data/in10/in10_split_converted.npz',
+                allow_pickle=True)
     x_train, x_test = l['x_train'], l['x_test_none']
 
     l = np.load('experiments/{}.npz'.format(exp),

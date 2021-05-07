@@ -12,7 +12,7 @@ class DataConverter:
         self.model = model
 
     @staticmethod
-    def create_split(path='data', save_path='data/in10_split', test_size=3/13, random_state=69):
+    def create_split(path='in10', save_path='data/in10_split', test_size=3/13, random_state=69):
         ds = data_split.DataSplit()
         ds.save_split(path, save_path, test_size, random_state)
     
