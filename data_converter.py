@@ -25,7 +25,7 @@ def perturb_img(index, path, blur, mode, save_path, vgg):
     elif blur == 'gaussian_noise':
         img = gaussian_noise.GaussianNoise().noise(img, mode)
     elif blur == 'gaussian_blur':
-        img = gaussian(img, sigma=mode, preserve_range=True)
+        img = gaussian(img, sigma=mode, preserve_range=True, multichannel=False)
 
     img = Image.fromarray(img.astype('uint8'), 'RGB')
 
