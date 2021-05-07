@@ -54,7 +54,7 @@ class DataConverter:
             to_perturb = [[i, path, blur, mode, save_path, self.model]
                           for i, path in enumerate(paths)]
 
-            pool = mp.Pool(70 if int(mp.cpu_count()) > 70 else mp.cpu_count())
+            pool = mp.Pool(70 if int(mp.cpu_count()) > 70 else int(0.8*mp.cpu_count()))
             pool.map(self.perturb_img, to_perturb)
 
             features = list()
