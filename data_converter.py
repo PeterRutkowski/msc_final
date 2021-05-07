@@ -1,5 +1,5 @@
 import data_split
-from tqdm import tqdm
+from datetime import datetime
 from PIL import Image
 import numpy as np
 import salt_pepper_noise
@@ -42,7 +42,8 @@ class DataConverter:
                             data=perturbed)
     
     def perturb(self, paths, set_type, save_path, blur, mode):
-        predictions = list()
+        start_time = datetime.now()
+        print(set_type, blur, mode, end=' ')
         if not os.path.isfile('{}/{}_{}_{}.npz'.format(save_path, set_type, blur, mode)):
             try:
                 os.mkdir('{}/perturbs'.format(save_path))
@@ -56,20 +57,13 @@ class DataConverter:
             pool = mp.Pool(70 if int(mp.cpu_count()) > 70 else mp.cpu_count())
             pool.map(self.perturb_img, to_perturb)
 
+            features = list()
+            for index, _ in enumerate(paths):
+                with np.load('{}/perturbs/{}_{}_{}.npz'.format(save_path, blur, mode, index),
+                             allow_pickle=True) as f:
+                    features.append(f['data'])
 
-
-        for i in tqdm(range(len(paths)), desc='[{} {}]'.format(blur, mode)):
-            img = np.asarray(Image.open(paths[i]))
-            if blur == 'salt_pepper_noise':
-                img = salt_pepper_noise.SaltPepperNoise().noise(img, mode)
-            elif blur == 'gaussian_noise':
-                img = gaussian_noise.GaussianNoise().noise(img, mode)
-            elif blur == 'gaussian_blur':
-                img = gaussian(img, sigma=mode, preserve_range=True)
-
-            img = img.astype('uint8')
-
-            predictions.append(self.model.predict(Image.fromarray(img, 'RGB')))
-
-        np.savez_compressed('{}/{}_{}_{}'.format(save_path, set_type, blur, mode),
-                            data=np.asarray(predictions))
+            np.savez_compressed('{}/{}_{}_{}.npz'.format(save_path, set_type, blur, mode),
+                                data=np.asarray(features))
+            shutil.rmtree('{}/perturbs'.format(save_path))
+        print(datetime.now() - start_time)
