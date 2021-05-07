@@ -11,9 +11,10 @@ from tqdm import tqdm
 import vgg19bn
 
 
-def create_split(path='in10', save_path='data/in10_split', test_size=3/13, random_state=69):
-    ds = data_split.DataSplit()
-    ds.save_split(path, save_path, test_size, random_state)
+def create_split(path, save_path, test_size=3/13, random_state=69):
+    if not os.path.isfile('{}/in10_split.npz'.format(save_path)):
+        ds = data_split.DataSplit()
+        ds.save_split(path, save_path, test_size, random_state)
 
 
 def perturb_img(index, path, blur, mode, save_path, vgg):
