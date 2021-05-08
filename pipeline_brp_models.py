@@ -10,7 +10,6 @@ def component_model(train_data):
     x, y = train_data[0], train_data[1]
     clf = SVC(kernel='poly', degree=2)
     clf.fit(x, y)
-    print('nice')
 
     with open('data/{}/model_{}'.format(train_data[3], train_data[2]), 'wb') as f:
         joblib.dump(clf, f, compress='zlib')
