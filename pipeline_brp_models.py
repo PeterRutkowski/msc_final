@@ -10,6 +10,7 @@ def component_model(train_data):
     x, y = train_data[0], train_data[1]
     clf = SVC(kernel='poly', degree=2)
     clf.fit(x, y)
+    print('nice')
 
     with open('data/{}/model_{}'.format(train_data[3], train_data[2]), 'wb') as f:
         joblib.dump(clf, f, compress='zlib')
@@ -36,7 +37,7 @@ for experiment in experiments:
     for n in trained:
         to_be_trained.remove(n)
 
-    pool = mp.Pool(70 if mp.cpu_count() > 70 else mp.cpu_count())
+    pool = mp.Pool(50 if mp.cpu_count() > 70 else mp.cpu_count())
     pool.map(component_model, [[x_train, y_train[:, i], i, experiment] for i in to_be_trained])
 
     end_time = datetime.now()
