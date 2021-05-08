@@ -9,22 +9,8 @@ from gtda.mapper import *
 
 
 def fit(x, projector, clusterer, n_components, n_intervals, experiment_name,
-        overlap_frac=0.33, kind='uniform'):
-    """Trains Mapper algorithm on x.
-
-    :param x: Images.
-    :type x: numpy.ndarray
-    :param projector: Model projecting images onto latent space.
-    :param clusterer: Model clustering images.
-    :param n_components: Number of latent space dimensions.
-    :type n_components: int
-    :param n_intervals: Number of intervals covering each latent
-    space component.
-    :type n_intervals: int
-    :param overlap_frac: Parameter defining much intervals can
-    overlap.
-    :type overlap_frac: float
-    """
+        save_path, overlap_frac=0.33, kind='uniform'):
+    """Trains Mapper algorithm on x."""
 
     projector = projector.fit(x)
     mapper_pipes = []
@@ -34,7 +20,7 @@ def fit(x, projector, clusterer, n_components, n_intervals, experiment_name,
                                            filter_func=Pipeline(
                                                steps=[('projector', projector),
                                                       ('proj', Projection(columns=i))],
-                                               verbose=1),
+                                               verbose=0),
                                            cover=OneDimensionalCover(kind=kind,
                                                                      n_intervals=n_intervals,
                                                                      overlap_frac=overlap_frac),
@@ -58,13 +44,13 @@ def fit(x, projector, clusterer, n_components, n_intervals, experiment_name,
         covers.append([(odc.left_limits_[j], odc.right_limits_[j])
                        for j in range(n_intervals)])
 
-    with open('pipeline_data/{}/mapper'.format(experiment_name), 'wb') as f:
+    with open('{}/{}/mapper'.format(save_path, experiment_name), 'wb') as f:
         pickle.dump((latent_projector, graphs, covers), f)
 
 
-def get_representations(x, graphs, experiment_name):
+def get_representations(x, graphs, experiment_name, save_path):
     b = binarizer.Binarizer()
     x_rep = b.binarize(x, graphs)
     print(x_rep.shape)
-    np.savez_compressed('pipeline_data/{}/bin_rep_x_train.npz'.format(experiment_name),
+    np.savez_compressed('{}/{}/bin_rep_x_train.npz'.format(save_path, experiment_name),
                         data=x_rep)
