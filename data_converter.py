@@ -28,9 +28,10 @@ def perturb_img(index, path, blur, mode, save_path, vgg):
         img = gaussian(img, sigma=mode, preserve_range=True, multichannel=False)
 
     img = Image.fromarray(img.astype('uint8'), 'RGB')
+    prediction = vgg.predict(img)
 
     np.savez_compressed('{}/perturbs/{}_{}_{}'.format(save_path, blur, mode, index),
-                        data=vgg.predict(img))
+                        data=prediction.reshape((prediction.shape[0], 25088)))
 
 
 def perturb(paths, set_type, save_path, blur, mode):

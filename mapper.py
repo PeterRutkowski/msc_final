@@ -51,7 +51,7 @@ class Mapper:
         
         latent_projector = latent_space.LatentSpace([projector], 'latent_space')
         
-        graphs = Parallel(n_jobs=int(0.5*mp.cpu_count()), prefer="threads", verbose=0)(
+        graphs = Parallel(n_jobs=int(0.8*mp.cpu_count()), prefer="threads", verbose=0)(
             delayed(mapper_pipe[1].fit_transform)(x) for mapper_pipe in mapper_pipes)
         
         x_proj = projector.transform(x)
