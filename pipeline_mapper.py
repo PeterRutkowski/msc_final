@@ -31,4 +31,4 @@ def mapper_training(n_components, epsilon, n_intervals):
                                save_path='data')
 
 
-mapper_training(10, 300, 4)
+mapper_training(60, 300, 4)
