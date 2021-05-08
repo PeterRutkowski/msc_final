@@ -20,9 +20,9 @@ experiments = ['pca60_eps120_int4']
 for experiment in experiments:
     print(experiment, end=' ')
     start_time = datetime.now()
-    x_train = np.load('data/x_train_none_none.npz', allow_pickle=True)['in10']
+    x_train = np.load('data/x_train_none_none.npz', allow_pickle=True)['data']
     y_train = np.load('data/{}/bin_rep_x_train.npz'.format(experiment),
-                      allow_pickle=True)['in10']
+                      allow_pickle=True)['data']
 
     _, _, filenames = next(walk('data/{}'.format(experiment)))
 
