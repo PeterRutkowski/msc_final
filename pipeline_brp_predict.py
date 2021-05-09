@@ -23,9 +23,11 @@ def predict_feature(input_data):
                             data=np.asarray(joblib.load(f).predict(x_test)).T)
 
 
-experiments = ['pca60_eps85_int4',
-               'pca60_eps85_int7',
+experiments = ['pca60_eps120_int4',
+               'pca60_eps100_int4',
                'pca60_eps90_int4',
+               'pca60_eps120_int7',
+               'pca60_eps100_int7',
                'pca60_eps90_int7']
 
 for experiment in experiments:
@@ -50,7 +52,7 @@ for experiment in experiments:
                 os.mkdir('data/{}/bin_rep'.format(experiment))
 
             with np.load('data/{}.npz'.format(test_set), allow_pickle=True) as f:
-                x = f['in10']
+                x = f['data']
 
             n_features = feature_counter('data/{}'.format(experiment))
             feature_predictions = list()
