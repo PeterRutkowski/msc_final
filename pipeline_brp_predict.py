@@ -59,7 +59,7 @@ for experiment in experiments:
             for i in range(n_features):
                 feature_predictions.append([experiment, i, x, test_set])
 
-            pool = mp.Pool(70 if int(mp.cpu_count()) > 70 else mp.cpu_count())
+            pool = mp.Pool(60 if int(mp.cpu_count()) > 70 else mp.cpu_count())
             pool.map(predict_feature, feature_predictions)
 
             bin_rep = list()
