@@ -38,7 +38,7 @@ for experiment in experiments:
     for n in trained:
         to_be_trained.remove(n)
 
-    pool = mp.Pool(40)
+    pool = mp.Pool(int(0.8*mp.cpu_count()))
     pool.map(component_model, [[x_train, y_train[:, i], i, experiment] for i in to_be_trained])
 
     end_time = datetime.now()
