@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn.svm import SVC
+from sklearn.svm import LinearSVC
 import multiprocessing as mp
 import joblib
 from os import walk
@@ -8,14 +8,16 @@ from datetime import datetime
 
 def component_model(train_data):
     x, y = train_data[0], train_data[1]
-    clf = SVC(kernel='poly', degree=2)
+    clf = LinearSVC()
     clf.fit(x, y)
 
     with open('data/{}/model_{}'.format(train_data[3], train_data[2]), 'wb') as f:
         joblib.dump(clf, f, compress='zlib')
 
 
-experiments = ['pca60_eps120_int4']
+experiments = ['pca60_eps120_int4',
+               'pca60_eps100_int4',
+               'pca60_eps90_int4']
 
 for experiment in experiments:
     print(experiment, end=' ')
@@ -36,7 +38,7 @@ for experiment in experiments:
     for n in trained:
         to_be_trained.remove(n)
 
-    pool = mp.Pool(50 if mp.cpu_count() > 70 else mp.cpu_count())
+    pool = mp.Pool(6)
     pool.map(component_model, [[x_train, y_train[:, i], i, experiment] for i in to_be_trained])
 
     end_time = datetime.now()
