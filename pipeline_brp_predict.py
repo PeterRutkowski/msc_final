@@ -66,7 +66,7 @@ for experiment in experiments:
             for i in range(n_features):
                 with np.load('data/{}/bin_rep/{}_{}.npz'.format(
                         experiment, test_set, i), allow_pickle=True) as f:
-                    bin_rep.append(f['in10'])
+                    bin_rep.append(f['data'])
 
             np.savez_compressed('data/{}/bin_rep_{}'.format(experiment, test_set),
                                 data=np.asarray(bin_rep).T)
@@ -75,5 +75,5 @@ for experiment in experiments:
         print(experiment,
               test_set,
               np.load('data/{}/bin_rep_{}.npz'.format(experiment, test_set),
-                      allow_pickle=True)['in10'].shape,
+                      allow_pickle=True)['data'].shape,
               end_time - start_time)
