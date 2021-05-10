@@ -60,7 +60,7 @@ with open('data/plots.html', 'a') as f:
                              'x_test_gaussian_blur_5.0',
                              'x_test_gaussian_blur_5.5']:
                 x_test = np.load('data/{}/bin_rep_{}.npz'.format(experiment, test_set),
-                                 allow_pickle=True)['in10']
+                                 allow_pickle=True)['data']
 
                 scores.append([' '.join(test_set.split('_')[2:-1]),
                                'Mapper classifier',
@@ -68,7 +68,7 @@ with open('data/plots.html', 'a') as f:
                                clf.score(x_test, y_test)])
 
                 nn_x_test = torch.Tensor(np.load('data/{}.npz'.format(test_set),
-                                                 allow_pickle=True)['in10'])
+                                                 allow_pickle=True)['data'])
                 nn_y_test = np.squeeze(torch.LongTensor(y_test))
 
                 nn.eval()
