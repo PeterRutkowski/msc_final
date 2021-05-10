@@ -12,7 +12,9 @@ x_train = torch.Tensor(x_train)
 y_train = np.squeeze(torch.LongTensor(y_train))
 
 model = torch.nn.Sequential(
-    torch.nn.Linear(D_in, D_out),
+    torch.nn.Linear(D_in, 1000),
+    torch.nn.Sigmoid(),
+    torch.nn.Linear(1000, D_out),
 )
 
 loss_fn = torch.nn.NLLLoss()
