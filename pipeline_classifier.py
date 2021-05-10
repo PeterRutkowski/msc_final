@@ -4,12 +4,11 @@ import torch
 import pickle
 import pandas as pd
 import plotly.express as px
-from plotly.subplots import make_subplots
 import os
 
 
 def plot(experiment_name, noise_type):
-    df = pickle.load(open('pipeline_data/{}/scores'.format(experiment_name), 'rb'))
+    df = pickle.load(open('data/{}/scores'.format(experiment_name), 'rb'))
     fig = px.line(df[df['noise'].isin([noise_type, 'none'])],
                   x='noise scale',
                   y='accuracy',
@@ -22,12 +21,12 @@ def plot(experiment_name, noise_type):
     return fig
 
 
-experiments = ['pca60_eps100_int4',
+experiments = ['pca60_eps120_int4',
+               'pca60_eps100_int4',
                'pca60_eps90_int4',
-               'pca60_eps85_int4',
+               'pca60_eps120_int7',
                'pca60_eps100_int7',
-               'pca60_eps90_int7',
-               'pca60_eps85_int7']
+               'pca60_eps90_int7']
 
 with open('data/plots.html', 'a') as f:
     for exp_index, experiment in enumerate(experiments):
