@@ -42,7 +42,7 @@ with open('data/plots.html', 'a') as f:
             clf.fit(x_train, y_train)
             pickle.dump(clf, open('data/{}/classifier'.format(experiment), 'wb'))
 
-        nn = torch.load('data/nn_benchmark.pt', map_location=torch.device('cpu'))
+        nn = torch.load('data/benchmark_f.pt', map_location=torch.device('cpu'))
 
         scores = list()
 
