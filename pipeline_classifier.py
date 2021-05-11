@@ -21,12 +21,15 @@ def plot(experiment_name, noise_type):
     return fig
 
 
-experiments = ['pca60_eps120_int4',
+'''experiments = ['pca60_eps120_int4',
                'pca60_eps100_int4',
                'pca60_eps90_int4',
                'pca60_eps120_int7',
                'pca60_eps100_int7',
-               'pca60_eps90_int7']
+               'pca60_eps90_int7']'''
+
+experiments = ['pca60_eps120_int4']
+
 
 with open('data/plots.html', 'a') as f:
     for exp_index, experiment in enumerate(experiments):
@@ -42,7 +45,7 @@ with open('data/plots.html', 'a') as f:
             clf.fit(x_train, y_train)
             pickle.dump(clf, open('data/{}/classifier'.format(experiment), 'wb'))
 
-        nn = torch.load('data/benchmark_f.pt', map_location=torch.device('cpu'))
+        nn = torch.load('data/benchmark_f.pt', map_location=torch.device('cpu')).eval()
 
         scores = list()
 
@@ -70,7 +73,6 @@ with open('data/plots.html', 'a') as f:
                                              allow_pickle=True)['data'])
             nn_y_test = np.squeeze(torch.LongTensor(y_test))
 
-            nn.eval()
             outputs = nn(nn_x_test)
             _, predicted = torch.max(outputs, 1)
             eval_mask = (predicted == nn_y_test).squeeze()
