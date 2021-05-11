@@ -21,15 +21,17 @@ def plot(experiment_name, noise_type):
     return fig
 
 
-'''experiments = ['pca60_eps120_int4',
+experiments = ['pca60_eps120_int4',
                'pca60_eps100_int4',
                'pca60_eps90_int4',
                'pca60_eps120_int7',
                'pca60_eps100_int7',
-               'pca60_eps90_int7']'''
+               'pca60_eps90_int7']
 
-experiments = ['pca60_eps120_int4']
-
+try:
+    os.remove('data/plots.html')
+except FileNotFoundError:
+    pass
 
 with open('data/plots.html', 'a') as f:
     for exp_index, experiment in enumerate(experiments):
