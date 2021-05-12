@@ -31,7 +31,7 @@ def perturb_img(index, path, blur, mode, save_path, vgg):
     prediction = vgg.predict(img)
 
     np.savez_compressed('{}/perturbs/{}_{}_{}'.format(save_path, blur, mode, index),
-                        data=prediction.reshape((prediction.shape[0], 25088)))
+                        data=prediction)
 
 
 def perturb(paths, set_type, save_path, blur, mode):

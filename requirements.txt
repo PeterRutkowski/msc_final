@@ -11,12 +11,17 @@ certifi==2020.12.5
 cffi==1.14.5
 chardet==4.0.0
 cycler==0.10.0
+DateTime==4.3
 decorator==4.4.2
 defusedxml==0.6.0
+eagerpy==0.29.0
 entrypoints==0.3
 flatbuffers==1.12
+foolbox==3.3.1
 gast==0.3.3
 giotto-tda==0.4.0
+gitdb==4.0.7
+GitPython==3.1.14
 google-auth==1.26.1
 google-auth-oauthlib==0.4.2
 google-pasta==0.2.0
@@ -58,6 +63,7 @@ oauthlib==3.1.0
 opencv-python==4.5.1.48
 opt-einsum==3.3.0
 packaging==20.9
+pandas==1.2.4
 pandocfilters==1.4.3
 parso==0.8.1
 pexpect==4.8.0
@@ -78,6 +84,7 @@ pyparsing==2.4.7
 pyrsistent==0.17.3
 python-dateutil==2.8.1
 python-igraph==0.8.3
+pytz==2021.1
 PyWavelets==1.1.1
 pyzmq==22.0.2
 qtconsole==5.0.3
@@ -91,6 +98,7 @@ scikit-learn==0.24.1
 scipy==1.6.0
 Send2Trash==1.5.0
 six==1.15.0
+smmap==4.0.0
 tensorboard==2.4.1
 tensorboard-plugin-wit==1.8.0
 tensorflow==2.4.1
@@ -115,3 +123,4 @@ Werkzeug==1.0.1
 widgetsnbextension==3.5.1
 wrapt==1.12.1
 zipp==3.4.0
+zope.interface==5.4.0
