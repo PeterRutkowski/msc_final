@@ -23,17 +23,17 @@ for path in ['data/x_test_gaussian_noise_10.npz',
              'data/x_test_salt_pepper_noise_0.27.npz',
              'data/x_test_salt_pepper_noise_0.30.npz',
              'data/x_test_salt_pepper_noise_0.33.npz',
-             'data/x_test_salt_gaussian_blur_0.5.npz',
-             'data/x_test_salt_gaussian_blur_1.0.npz',
-             'data/x_test_salt_gaussian_blur_1.5.npz',
-             'data/x_test_salt_gaussian_blur_2.0.npz',
-             'data/x_test_salt_gaussian_blur_2.5.npz',
-             'data/x_test_salt_gaussian_blur_3.0.npz',
-             'data/x_test_salt_gaussian_blur_3.5.npz',
-             'data/x_test_salt_gaussian_blur_4.0.npz',
-             'data/x_test_salt_gaussian_blur_4.5.npz',
-             'data/x_test_salt_gaussian_blur_5.0.npz',
-             'data/x_test_salt_gaussian_blur_5.5.npz']:
+             'data/x_test_gaussian_blur_0.5.npz',
+             'data/x_test_gaussian_blur_1.0.npz',
+             'data/x_test_gaussian_blur_1.5.npz',
+             'data/x_test_gaussian_blur_2.0.npz',
+             'data/x_test_gaussian_blur_2.5.npz',
+             'data/x_test_gaussian_blur_3.0.npz',
+             'data/x_test_gaussian_blur_3.5.npz',
+             'data/x_test_gaussian_blur_4.0.npz',
+             'data/x_test_gaussian_blur_4.5.npz',
+             'data/x_test_gaussian_blur_5.0.npz',
+             'data/x_test_gaussian_blur_5.5.npz']:
     x = np.load(path, allow_pickle=True)['data']
     print(path, x.shape, end=' ')
     x = np.reshape(x, (x.shape[0], 25088))
